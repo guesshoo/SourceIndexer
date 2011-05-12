@@ -127,13 +127,11 @@
     <value>SRCSRV: ini ------------------------------------------------
 VERSION=1
 SRCSRV: variables ------------------------------------------
-DATETIME={0}
-{1}
-SRCSRVTRG={2}
+DATETIME={0:u}
+{1}SRCSRVTRG={2}
 SRCSRVCMD={3}
 SRCSRV: source files ---------------------------------------
-{4}
-SRCSRV: end ------------------------------------------------</value>
+{4}SRCSRV: end ------------------------------------------------</value>
   </data>
   <data name="WriteCommand" xml:space="preserve">
     <value>-w -s:srcsrv -p:"{0}" -i:"{1}"</value>

@@ -12,10 +12,12 @@ namespace SourceIndexer
 		private readonly string toolPath;
 		private readonly string symbolPath;
 		private readonly string rootPath;
-		private readonly ICollection<string> sourceFiles = new HashSet<string>();
+
+		public ICollection<string> SourceFiles { get; private set; }
 
 		public DebugSymbol(string symbolPath, string toolPath, string rootPath)
 		{
+			this.SourceFiles = new HashSet<string>();
 			this.symbolPath = symbolPath.Standardize();
 			this.rootPath = rootPath.Standardize();
 			this.toolPath = toolPath.Standardize();
@@ -28,7 +30,12 @@ namespace SourceIndexer
 				return;
 
 			foreach (var file in this.GetSourceFiles())
-				this.sourceFiles.Add(file);
+				this.SourceFiles.Add(file);
+
+			Console.WriteLine(
+				"Discovered {0} indexable source files in '{1}'",
+				this.SourceFiles.Count,
+				this.symbolPath);
 		}
 		private bool AlreadyIndexed()
 		{
@@ -76,6 +83,7 @@ namespace SourceIndexer
 		}
 		private void ExecuteWrite(string command)
 		{
+			Console.WriteLine("Rewriting indexed debug database '{0}'", this.symbolPath);
 			var executable = Path.Combine(this.toolPath, WriteTool);
 			executable.ExecuteCommand(command);
 		}

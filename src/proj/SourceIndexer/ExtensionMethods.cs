@@ -1,9 +1,11 @@
 namespace SourceIndexer
 {
+	using System;
 	using System.Collections.Generic;
 	using System.Diagnostics;
 	using System.Globalization;
 	using System.IO;
+	using System.Security.Cryptography;
 
 	internal static class ExtensionMethods
 	{
@@ -60,6 +62,17 @@ namespace SourceIndexer
 				path = Path.GetFullPath(path);
 
 			return path;
+		}
+
+		public static byte[] ComputeHash(this Stream inputStream)
+		{
+			using (HashAlgorithm algorithm = new SHA1Managed())
+				return algorithm.ComputeHash(inputStream);
+		}
+		public static string FormatHash(this byte[] hash)
+		{
+			var hex = BitConverter.ToString(hash).ToLowerInvariant().Replace("-", "");
+			return hex.Substring(0, 3) + "\\" + hex.Substring(3, 3) + "\\" + hex.Substring(6);
 		}
 	}
 }

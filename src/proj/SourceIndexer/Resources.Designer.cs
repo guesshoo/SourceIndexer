@@ -82,13 +82,11 @@ namespace SourceIndexer {
         ///   Looks up a localized string similar to SRCSRV: ini ------------------------------------------------
         ///VERSION=1
         ///SRCSRV: variables ------------------------------------------
-        ///DATETIME={0}
-        ///{1}
-        ///SRCSRVTRG={2}
+        ///DATETIME={0:u}
+        ///{1}SRCSRVTRG={2}
         ///SRCSRVCMD={3}
         ///SRCSRV: source files ---------------------------------------
-        ///{4}
-        ///SRCSRV: end ------------------------------------------------.
+        ///{4}SRCSRV: end ------------------------------------------------.
         /// </summary>
         internal static string SymbolStream {
             get {

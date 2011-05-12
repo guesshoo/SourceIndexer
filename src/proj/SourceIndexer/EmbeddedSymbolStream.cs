@@ -1,5 +1,6 @@
 namespace SourceIndexer
 {
+	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Text;
@@ -29,6 +30,7 @@ namespace SourceIndexer
 				return string.Empty;
 
 			return Resources.SymbolStream.FormatWith(
+				DateTime.UtcNow,
 				this.FormatVariables(),
 				this.resolvedFilePath,
 				this.resolveFileCommand,
