@@ -12,11 +12,11 @@ namespace SourceIndexer
 		private const string ResolvedFilePath = "%targ%\\%var2%\\%fnfile%(%var1%)";
 		private const string ResolveFileCommand = "cmd.exe /c copy /y \"%srcsrvsrc%\" %srcsrvtrg%";
 		private static readonly IDictionary<string, string> Hashes = new Dictionary<string, string>();
-		private readonly string copyToPath;
+		private readonly string sourceControlPath;
 
-		public NetworkShareIndexer(string copyToPath)
+		public NetworkShareIndexer(string sourceControlPath)
 		{
-			this.copyToPath = copyToPath;
+			this.sourceControlPath = sourceControlPath;
 		}
 
 		public void Index(DebugSymbol symbol)
@@ -48,21 +48,21 @@ namespace SourceIndexer
 			using (Stream inputStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
 				Hashes[filename] = hash = inputStream.ComputeHash().FormatHash();
 
-			this.CopyToOutput(filename, hash);
+			this.PushToSourceControl(filename, hash);
 
 			return hash;
 		}
 
-		private void CopyToOutput(string filename, string hash)
+		private void PushToSourceControl(string filename, string hash)
 		{
-			if (string.IsNullOrEmpty(this.copyToPath))
+			if (string.IsNullOrEmpty(this.sourceControlPath))
 				return;
 
-			var destination = Path.Combine(this.copyToPath, hash, Path.GetFileName(filename) ?? string.Empty);
+			var destination = Path.Combine(this.sourceControlPath, hash, Path.GetFileName(filename) ?? string.Empty);
 			if (File.Exists(destination))
 				return;
 
-			Console.WriteLine(string.Format("Replicating '{0}' to '{1}'.", filename, destination));
+			Console.WriteLine(string.Format("Pushing '{0}' into source control system at '{1}'.", filename, destination));
 			var directory = Path.GetDirectoryName(destination) ?? string.Empty;
 			Directory.CreateDirectory(directory);
 			File.Copy(filename, destination, true);
