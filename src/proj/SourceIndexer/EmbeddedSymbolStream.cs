@@ -34,7 +34,7 @@ namespace SourceIndexer
 				this.FormatVariables(),
 				this.resolvedFilePath,
 				this.resolveFileCommand,
-				this.FormatFiles());
+				this.FormatFiles()) + Environment.NewLine;
 		}
 
 		private string FormatVariables()
