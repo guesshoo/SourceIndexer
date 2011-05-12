@@ -16,12 +16,8 @@ namespace SourceIndexer
 
 		public static string ExecuteCommand(this string executable, string arguments)
 		{
-			if (!File.Exists(executable))
-				throw new FileNotFoundException("Executable file doesn't exist.");
-
 			var command = new ProcessStartInfo(executable, arguments)
 			{
-				WorkingDirectory = Path.GetDirectoryName(executable) ?? string.Empty,
 				UseShellExecute = false,
 				RedirectStandardError = true,
 				RedirectStandardOutput = true

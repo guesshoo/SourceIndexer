@@ -9,18 +9,16 @@ namespace SourceIndexer
 	{
 		private const string ReadTool = "srctool.exe";
 		private const string WriteTool = "pdbstr.exe";
-		private readonly string toolPath;
 		private readonly string symbolPath;
 		private readonly string rootPath;
 
 		public ICollection<string> SourceFiles { get; private set; }
 
-		public DebugSymbol(string symbolPath, string toolPath, string rootPath)
+		public DebugSymbol(string symbolPath, string rootPath)
 		{
 			this.SourceFiles = new HashSet<string>();
 			this.symbolPath = symbolPath.Standardize();
 			this.rootPath = rootPath.Standardize();
-			this.toolPath = toolPath.Standardize();
 			this.ReadSymbol();
 		}
 
@@ -39,14 +37,14 @@ namespace SourceIndexer
 		}
 		private bool AlreadyIndexed()
 		{
-			var output = this.ExecuteRead(Resources.AlreadyIndexed.FormatWith(this.symbolPath));
+			var output = ExecuteRead(Resources.AlreadyIndexed.FormatWith(this.symbolPath));
 			return output.Contains("source files are indexed") ||
 			       output.Contains("source file is indexed");
 		}
 
 		private IEnumerable<string> GetSourceFiles()
 		{
-			var output = this.ExecuteRead(Resources.GetSourceFiles.FormatWith(this.symbolPath));
+			var output = ExecuteRead(Resources.GetSourceFiles.FormatWith(this.symbolPath));
 			return output.Enumerate()
 				.Where(item => !IsCPlusPlusFile(item))
 				.Select(item => item.Standardize())
@@ -76,16 +74,14 @@ namespace SourceIndexer
 			}
 		}
 
-		private string ExecuteRead(string command)
+		private static string ExecuteRead(string command)
 		{
-			var executable = Path.Combine(this.toolPath, ReadTool);
-			return executable.ExecuteCommand(command);
+			return ReadTool.ExecuteCommand(command);
 		}
 		private void ExecuteWrite(string command)
 		{
 			Console.WriteLine("Rewriting indexed debug database '{0}'", this.symbolPath);
-			var executable = Path.Combine(this.toolPath, WriteTool);
-			executable.ExecuteCommand(command);
+			WriteTool.ExecuteCommand(command);
 		}
 	}
 }
