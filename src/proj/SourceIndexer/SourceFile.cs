@@ -8,7 +8,7 @@ namespace SourceIndexer
 
 		public SourceFile(string filename, params string[] arguments)
 		{
-			this.value = string.Join("*", new[] { filename } .Concat(arguments));
+			this.value = string.Join("*", new[] { filename }.Concat(arguments));
 		}
 
 		public override string ToString()

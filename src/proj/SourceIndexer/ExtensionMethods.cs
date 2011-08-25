@@ -67,7 +67,7 @@ namespace SourceIndexer
 		}
 		public static string FormatHash(this byte[] hash)
 		{
-			var hex = BitConverter.ToString(hash).ToLowerInvariant().Replace("-", "");
+			var hex = BitConverter.ToString(hash).ToLowerInvariant().Replace("-", string.Empty);
 			return hex.Substring(0, 3) + "\\" + hex.Substring(3, 3) + "\\" + hex.Substring(6);
 		}
 	}
